@@ -1,4 +1,4 @@
-package MusicDictation;
+package musicdictation;
 
 public class AudioUse {
 
