@@ -14,6 +14,16 @@ jobs:
         with:
           distribution: temurin
           java-version: '21'
-          cache: maven
+      - name: Download test libraries
+        run: |
+          mkdir -p .tools/tests
+          base=https://repo.maven.apache.org/maven2
+          curl -fL "$base/org/junit/platform/junit-platform-console-standalone/1.11.4/junit-platform-console-standalone-1.11.4.jar" -o .tools/tests/junit.jar
+          curl -fL "$base/org/mockito/mockito-core/5.14.2/mockito-core-5.14.2.jar" -o .tools/tests/mockito.jar
+          curl -fL "$base/net/bytebuddy/byte-buddy/1.15.4/byte-buddy-1.15.4.jar" -o .tools/tests/byte-buddy.jar
+          curl -fL "$base/net/bytebuddy/byte-buddy-agent/1.15.4/byte-buddy-agent-1.15.4.jar" -o .tools/tests/byte-buddy-agent.jar
+          curl -fL "$base/org/objenesis/objenesis/3.3/objenesis-3.3.jar" -o .tools/tests/objenesis.jar
+      - name: Compile Java
+        run: javac -cp ".tools/tests/*" -d build src/musicdictation/*.java test/musicdictation/*.java
       - name: Run unit tests
-        run: mvn --batch-mode --no-transfer-progress test
+        run: java -cp "build:.tools/tests/*" org.junit.platform.console.ConsoleLauncher execute --select-class musicdictation.TranscriptionServiceTest --fail-if-no-tests
