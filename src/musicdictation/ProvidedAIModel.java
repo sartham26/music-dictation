@@ -4,8 +4,8 @@ public class ProvidedAIModel {
 
 	private String modelName;
 
-	public Score detectNotes(AudioFile audio) {
-		throw new UnsupportedOperationException("The provided AI model is not connected.");
+	public void detectNotes(AudioFile filteredAudio) {
+		throw new UnsupportedOperationException();
 	}
 
 }
